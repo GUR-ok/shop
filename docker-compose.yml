@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  app:
+    image: 'shop-img'
+    build:
+      context: .
+    container_name: shop-app
+    depends_on:
+      - db
+    ports:
+      - "8081:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/shopdb
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=pass
+
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: db
+    volumes:
+      - /private/var/lib/postgresql:/var/lib/postgresql
+    ports:
+      - "6543:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=shopdb
